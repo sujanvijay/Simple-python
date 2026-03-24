@@ -8,10 +8,12 @@ pipeline {
     stages {
 
         stage('Clone Code') {
-            steps {
-                git 'https://github.com/sujanvijay/Simple-python.git'
-            }
-        }
+    steps {
+        git url: 'https://github.com/sujanvijay/Simple-python.git',
+            branch: 'main',
+            credentialsId: 'sujan'
+          }
+      }
 
         stage('Build Docker Image') {
             steps {
