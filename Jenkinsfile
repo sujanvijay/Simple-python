@@ -11,7 +11,6 @@ pipeline {
     steps {
         git url: 'https://github.com/sujanvijay/Simple-python.git',
             branch: 'main',
-            credentialsId: 'sujan'
           }
       }
 
