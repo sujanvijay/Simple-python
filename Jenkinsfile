@@ -9,7 +9,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/sujan/simple-python-app.git'
+                git 'https://github.com/sujanvijay/Simple-python.git'
             }
         }
 
