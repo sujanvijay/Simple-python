@@ -22,18 +22,19 @@ pipeline {
         }
 
         stage('DockerHub Login') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: "${Docker_CRED}",
-                    usernameVariable: 'sujanvijay',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh """
-                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                    """
-                }
-            }
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'Docker_CRED',
+            usernameVariable: 'USERNAME',
+            passwordVariable: 'PASSWORD'
+        )]) {
+            sh '''
+            docker login -u "$USERNAME" -p "$PASSWORD"
+            docker push sujanvijay/simple-python-app:v1
+            '''
         }
+    }
+}
 
         stage('Deploy to Kubernetes') {
             steps {
