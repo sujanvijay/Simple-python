@@ -7,33 +7,26 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-    steps {
-        git url: 'https://github.com/sujanvijay/Simple-python.git',
-            branch: 'main',
-          }
-      }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE:v1 .'
             }
         }
 
-        stage('DockerHub Login') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'Docker_CRED',
-            usernameVariable: 'USERNAME',
-            passwordVariable: 'PASSWORD'
-        )]) {
-            sh '''
-            docker login -u "$USERNAME" -p "$PASSWORD"
-            docker push sujanvijay/simple-python-app:v1
-            '''
+        stage('Push to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'Docker_CRED',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    sh '''
+                    docker login -u "$USERNAME" -p "$PASSWORD"
+                    docker push $DOCKER_IMAGE:v1
+                    '''
+                }
+            }
         }
-    }
-}
 
         stage('Deploy to Kubernetes') {
             steps {
